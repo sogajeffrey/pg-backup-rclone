@@ -7,14 +7,13 @@ echo "Job started: $(date)"
 DATE=$(date +%Y%m%d_%H%M%S)
 FILE="/dump/$PREFIX-$DATE.sql"
 
-pg_dump -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -f "$FILE" -d "$PGDB" 
+pg_dumpall -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -f "$FILE" 
 gzip "$FILE"
 
+rclone move ${FILE}.gz ${RCLONE_REMOTE}:${RCLONE_PATH}/
+
 if [ ! -z "$DELETE_OLDER_THAN" ]; then
-	echo "Deleting old backups: $DELETE_OLDER_THAN"
-	find /dump/* -mmin "+$DELETE_OLDER_THAN" -exec rm {} \;
+	rclone delete ${RCLONE_REMOTE}:${RCLONE_PATH}/ --min-age ${DELETE_OLDER_THAN}
 fi
-
-
 
 echo "Job finished: $(date)"
