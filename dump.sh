@@ -6,6 +6,33 @@ echo "Job started: $(date)"
 
 DATE=$(date +%Y%m%d_%H%M%S)
 FILE="/dump/$PREFIX-$DATE.sql"
+RCLONE_CONF=/root/.config/rclone/rclone.conf
+
+if [[ -z "${PGUSER}" ]]; then
+  PGUSER=postgres
+fi
+
+if [[ -z "${PGPASSWORD}" ]]; then
+  PGPASSWORD=postgres
+fi
+
+if [[ -z "${PGHOST}" ]]; then
+  PGHOST=localhost
+fi
+
+if [[ -z "${PGPORT}" ]]; then
+  PGPORT=5432
+fi
+
+if [[ -z "${RCLONE_REMOTE}" ]] || [[ -z "${RCLONE_PATH}" ]]; then
+  echo "RCLONE_REMOTE and RCLONE_PATH must be set"
+  exit 1
+fi
+
+if [[ ! -f "$RCLONE_CONF" ]]; then
+    echo "Please mount the /root folder which contains /root/.config/rclone/rclone.conf"
+	exit 1
+fi
 
 pg_dumpall -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -f "$FILE" 
 gzip "$FILE"
