@@ -3,6 +3,7 @@
 set -e
 
 echo "Job started: $(date)"
+RCLONE_CONF=/root/.config/rclone/rclone.conf
 
 if [[ -z "${PREFIX}" ]]; then
   PREFIX=dump
@@ -36,7 +37,6 @@ fi
 
 DATE=$(date +%Y%m%d_%H%M%S)
 FILE="/dump/$PREFIX-$DATE.sql"
-RCLONE_CONF=/root/.config/rclone/rclone.conf
 
 pg_dumpall -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -f "$FILE" 
 gzip "$FILE"
