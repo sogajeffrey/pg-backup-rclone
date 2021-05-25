@@ -1,8 +1,7 @@
 FROM postgres:12-alpine
 
-RUN apt-get update && \
-    apt-get install -y cron && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apk -U add ca-certificates fuse wget dcron tzdata curl unzip \
+  && rm -rf /var/cache/apk/*
 
 # Install rclone
 RUN sh -c 'curl -sL https://rclone.org/install.sh | bash -'
