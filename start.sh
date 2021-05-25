@@ -13,7 +13,7 @@ fi
 
 mkdir /dump
 
-echo -e "$CRON_SCHEDULE /dump.sh > $LOGFIFO 2>&1" | crontab -
+echo -e "$CRON_SCHEDULE /dump.sh > $LOGFIFO 2>&1" > /etc/crontabs/root
 crontab -l
 crond 
 tail -f "$LOGFIFO"
