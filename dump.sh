@@ -41,10 +41,10 @@ FILE="/dump/$PREFIX-$DATE.sql"
 pg_dumpall -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -f "$FILE" 
 gzip "$FILE"
 
-rclone move ${FILE}.gz ${RCLONE_REMOTE}:${RCLONE_PATH}/
+rclone move ${FILE}.gz ${RCLONE_REMOTE}:${RCLONE_PATH}/ -P
 
 if [ ! -z "$DELETE_OLDER_THAN" ]; then
-	rclone delete ${RCLONE_REMOTE}:${RCLONE_PATH}/ --min-age ${DELETE_OLDER_THAN}
+	rclone delete ${RCLONE_REMOTE}:${RCLONE_PATH}/ --min-age ${DELETE_OLDER_THAN} -P
 fi
 
 echo "Job finished: $(date)"
