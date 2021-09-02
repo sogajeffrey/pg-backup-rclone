@@ -23,4 +23,4 @@ jobs:
     - name: Push to Docker Hub
       run: docker push sogajeffrey/pg-backup-rclone:latest
     - name: Push to Docker Hub
-      run: sogajeffrey/pg-backup-rclone:12-alpine
+      run: docker push sogajeffrey/pg-backup-rclone:12-alpine
